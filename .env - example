@@ -1,0 +1,8 @@
+HTTP_PORT = 5000
+TOKEN_SECRET = "pool-party-backend-13579"
+NETWORK = "https://api.devnet.solana.com"
+INITIALIZER_PRIVATE_KEY = ""
+WITHDRAW_PRIVATE_KEY = ""
+PROGRAM_ID = 57KXktzp1TaWRYq1k2Qx41rSwRcHQDKpLnxxEYmwv9JX
+ANCHOR_PROVIDER_URL = "https://api.devnet.solana.com"
+GAME_TOKEN = "HYrpV9vBvTzYRMoGfBkzjsxNQcJjWLqNUKwf5C7oy8uf"
