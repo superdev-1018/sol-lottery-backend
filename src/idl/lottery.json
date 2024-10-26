@@ -82,7 +82,7 @@
         },
         {
           "name": "ticketPrice",
-          "type": "u8"
+          "type": "u64"
         },
         {
           "name": "maxTicket",
@@ -491,7 +491,7 @@
           },
           {
             "name": "ticketPrice",
-            "type": "u8"
+            "type": "u64"
           },
           {
             "name": "maxTicket",
@@ -705,6 +705,6 @@
     }
   ],
   "metadata": {
-    "address": "57KXktzp1TaWRYq1k2Qx41rSwRcHQDKpLnxxEYmwv9JX"
+    "address": "6mcti5AtPeQ368eSpEuaoqqkPpiMAYbzbmKTDwGD47Uc"
   }
 }

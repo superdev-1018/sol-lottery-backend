@@ -41,8 +41,7 @@ if (!poolKeypair) {
 
 const gameToken = new PublicKey(process.env.GAME_TOKEN);
 
-let poolATA =  getOrCreateAssociatedTokenAccount(provider.connection, poolKeypair, gameToken, poolKeypair.publicKey);
-let withdrawATA =  getOrCreateAssociatedTokenAccount(provider.connection, withdrawer, gameToken, withdrawer.publicKey);
+
 let [globalPDA] =  PublicKey.findProgramAddressSync([Buffer.from("GLOBAL_SETTING_SEED"), initializer.publicKey.toBuffer()], program.programId);
 let [lotteryKeyInfoPDA] =  PublicKey.findProgramAddressSync([Buffer.from("LOTTERY_PDAKEY_INFO")], program.programId);
 let [winnerTickerPDA] =  PublicKey.findProgramAddressSync([Buffer.from("WINNER_TICKER_SEED")], program.programId);
@@ -57,8 +56,6 @@ export const initialize = async () => {
           lotteryPdakeyInfo: lotteryKeyInfoPDA,
           winnerTicker: winnerTickerPDA,
           depositeTicker: depositeTickerPDA,
-          // poolTokenAccount: (await poolATA).address,
-          // withdrawTokenAccount: (await withdrawATA).address,
           systemProgram: web3.SystemProgram.programId
         })
         .signers([initializer])
@@ -87,7 +84,7 @@ export const initLottery = async () => {
                 i,
                 time_frame_index, 
                 new BN(time_frame[i]),     
-                ticket_price[i],           
+                new BN(ticket_price[i]*web3.LAMPORTS_PER_SOL),           
                 new BN(max_tickets[i]),
                 dev_fees[i],
                 new BN(start_time)  
@@ -111,7 +108,7 @@ export const initLottery = async () => {
 export const createLottery = async (i: number) => {
 
     const finalLottery = await program.account.lotteryPdaInfo.fetch(lotteryKeyInfoPDA);
-    console.log(finalLottery,"final lottery in create");
+
     let final_id = finalLottery.count;
     let lotteryPDA = await getPDA([Buffer.from("LOTTERY_INFO_SEED"), initializer.publicKey.toBuffer(), new Uint8Array([final_id])], program.programId)
     let start_time = new Date().getTime();
@@ -119,7 +116,7 @@ export const createLottery = async (i: number) => {
         final_id,
         i, 
         new BN(time_frame[i]),     
-        ticket_price[i],           
+        new BN(ticket_price[i]* web3.LAMPORTS_PER_SOL),           
         new BN(max_tickets[i]),
         dev_fees[i],
         new BN(start_time)  
@@ -149,13 +146,13 @@ export const endLottery = async (i:number) => {
                 });
      
                 console.log(finalOneLottery,"Final Lottery");
-                // call endLottery for final lottery regarding to timeframe.
+
                 const endTxHash = await program.methods.endLottery()
                     .accounts({
                         admin: initializer.publicKey,
                         lottery: finalOneLottery.publicKey,
-                        poolTokenAccount: (await poolATA).address,
-                        taxTokenAccount: (await withdrawATA).address,
+                        poolTokenAccount: new web3.PublicKey(poolKeypair.publicKey),
+                        taxTokenAccount: new web3.PublicKey(withdrawer.publicKey),
                         winnerTicker: winnerTickerPDA
                     })
                     .signers([initializer])
@@ -167,21 +164,20 @@ export const endLottery = async (i:number) => {
                         if ( typeof res == 'string') {
                             console.log("lottery prize distribution")
  
-                            console.log(finalOneLottery.account.id)
+
                             let updatedLottery = await program.account.lottery.fetch(finalOneLottery.publicKey);
-                            console.log(updatedLottery,"updatedlottery data ")
+
                             let ATAs = [];
-                            console.log(updatedLottery.winner,"winners");
+
                             for(let i=0;i<3;i++){
-                                console.log(updatedLottery.winner[i]);
-                                let ATA = await getUserATA(updatedLottery.winner[i], gameToken, connection);
+                                let ATA = new web3.PublicKey(updatedLottery.winner[i]);
                                 ATAs.push(ATA);
                             } 
-                            console.log(ATAs[0],ATAs[1],ATAs[2],"ata in prize distribution");
+
                                 const txHash = await program.methods.prizeDistribution()
                                     .accounts({
                                         admin: initializer.publicKey,
-                                        poolTokenAccount: (await poolATA).address,
+                                        poolTokenAccount: new web3.PublicKey(poolKeypair.publicKey),
                                         lottery: finalOneLottery.publicKey,
                                         winner1TokenAccount: ATAs[0],
                                         winner2TokenAccount: ATAs[1],
@@ -209,15 +205,14 @@ export const endLottery = async (i:number) => {
                                 if (participants.length > 0) {
                                     console.log("length is more than 0")
                                     // If lottery has 1~3 participants, then program will refund the ticket price.
-                                    for (let i=0;i<participants.length;i++){console.log("refund")
+                                    for (let i=0;i<participants.length;i++){
                                         let participant = participants[i];
-                                        let participantATA = await getUserATA(participant, gameToken, connection);
-                                        console.log(participantATA, "ata in refund")
+                                        let participantATA = new web3.PublicKey(participant);
                                         await program.methods.refundToUser()
                                             .accounts({
                                                 admin: initializer.publicKey,
                                                 lottery: finalOneLottery.publicKey,
-                                                poolTokenAccount: (await poolATA).address,
+                                                poolTokenAccount: new web3.PublicKey(poolKeypair.publicKey),
                                                 participantTokenAccount: participantATA,
                                                 tokenProgram: TOKEN_PROGRAM_ID,
                                                 systemProgram: web3.SystemProgram.programId

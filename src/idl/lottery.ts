@@ -82,7 +82,7 @@ export type Lottery = {
         },
         {
           "name": "ticketPrice",
-          "type": "u8"
+          "type": "u64"
         },
         {
           "name": "maxTicket",
@@ -491,7 +491,7 @@ export type Lottery = {
           },
           {
             "name": "ticketPrice",
-            "type": "u8"
+            "type": "u64"
           },
           {
             "name": "maxTicket",
@@ -790,7 +790,7 @@ export const IDL: Lottery = {
         },
         {
           "name": "ticketPrice",
-          "type": "u8"
+          "type": "u64"
         },
         {
           "name": "maxTicket",
@@ -1199,7 +1199,7 @@ export const IDL: Lottery = {
           },
           {
             "name": "ticketPrice",
-            "type": "u8"
+            "type": "u64"
           },
           {
             "name": "maxTicket",

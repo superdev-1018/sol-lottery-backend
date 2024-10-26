@@ -70,7 +70,7 @@ const loadStartTimesFromFile = () => {
 loadStartTimesFromFile();
 
 const schedule_list = [
-  "0 * * * *",
+  "*/2 * * * *",
   "0 */3 * * *",
   "0 */6 * * *",
   "0 */12 * * *",
@@ -111,6 +111,7 @@ io.on("connection", (socket: any) => {
 io.listen(4000);
 
 const main = async () => {
+  
   await initialize()
     .then(async (res) => {
       if (res == true) {
