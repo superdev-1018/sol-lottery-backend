@@ -24,7 +24,7 @@ const idlPath = path.join("src", "idl", "lottery.json");
 const Lottery = JSON.parse(fs.readFileSync(idlPath, 'utf-8'));
 const program = new anchor.Program(Lottery, programId, provider);
 
-const withdrawer = getKeypair(process.env.WITHDRAW_PRIVATE_KEY);
+const withdrawer = process.env.WITHDRAW_PRIVATE_KEY;
 const poolKeypair = getKeypair(process.env.INITIALIZER_PRIVATE_KEY);
 
 if (!process.env.GAME_TOKEN) {
@@ -37,6 +37,10 @@ if(!initializer) {
 
 if (!poolKeypair) {
     throw new Error('Failed to get the Keypair from the private key.');
+}
+
+if (!withdrawer){
+    throw new Error("Failed to get the withdraw pubkey");
 }
 
 const gameToken = new PublicKey(process.env.GAME_TOKEN);
@@ -152,7 +156,7 @@ export const endLottery = async (i:number) => {
                         admin: initializer.publicKey,
                         lottery: finalOneLottery.publicKey,
                         poolTokenAccount: new web3.PublicKey(poolKeypair.publicKey),
-                        taxTokenAccount: new web3.PublicKey(withdrawer.publicKey),
+                        taxTokenAccount: new web3.PublicKey(withdrawer),
                         winnerTicker: winnerTickerPDA
                     })
                     .signers([initializer])
