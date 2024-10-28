@@ -129,8 +129,8 @@ const main = async () => {
     .then(async (res) => {
       if (res == true) {
         console.log(res, "res");
-        await initLottery();
         for (let i = 0; i < 10; i++) {
+          await initLottery();
           let start_time = new Date();
           start_time_list[i] = start_time;
         }
