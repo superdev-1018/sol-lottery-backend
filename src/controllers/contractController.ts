@@ -105,7 +105,7 @@ export const initLottery = async () => {
         }
     }
         let lotteryList = await program.account.lottery.all();
-        console.log(lotteryList,"lottery LIst");
+        // console.log(lotteryList,"lottery LIst");
 }
 
 
@@ -149,7 +149,7 @@ export const endLottery = async (i:number) => {
                     return (prev.account.id > current.account.id) ? prev : current;
                 });
      
-                console.log(finalOneLottery,"Final Lottery");
+                // console.log(finalOneLottery,"Final Lottery");
 
                 const endTxHash = await program.methods.endLottery()
                     .accounts({
@@ -171,7 +171,7 @@ export const endLottery = async (i:number) => {
 
                             let updatedLottery = await program.account.lottery.fetch(finalOneLottery.publicKey);
 
-                            let ATAs = [];
+                            let ATAs: web3.PublicKey[] = [];
 
                             for(let i=0;i<3;i++){
                                 let ATA = new web3.PublicKey(updatedLottery.winner[i]);

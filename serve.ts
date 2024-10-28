@@ -16,7 +16,6 @@ import {
 } from "./src/controllers/contractController";
 import { time_frame } from "./src/interfaces/global";
 import { formatTime } from "./src/util/utils";
-
 const router = express.Router();
 const app: Express = express();
 const port: Number = Number(process.env.HTTP_PORT || 5000);
@@ -83,7 +82,7 @@ loadStartTimesFromFile();
 // ];
 
 const schedule_list = [
-  "*/2 * * * *",
+  "* * * * *",
   "*/6 * * * *",
   "*/10 * * * *",
   "*/13 * * * *",
@@ -116,6 +115,7 @@ const io = new Server(httpServer, {
 });
 
 io.on("connection", (socket: any) => {
+  console.log("*******************************", socket.id)
   socket.on("disconnect", function () {
     console.log("user disconnected", socket.id);
   });
@@ -165,6 +165,7 @@ const main = async () => {
             message: `This ${formatTime(i)} Game Just Restarted Because of Not enough participant.`,
           });
         }
+
         let start_time = new Date();
         start_time_list[i] = start_time;
         saveStartTimesToFile();
