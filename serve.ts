@@ -124,7 +124,7 @@ io.on("connection", (socket: any) => {
 io.listen(4000);
 
 const main = async () => {
-  
+
   await initialize()
     .then(async (res) => {
       if (res == true) {
