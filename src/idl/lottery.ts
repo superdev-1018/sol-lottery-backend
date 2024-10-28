@@ -324,28 +324,6 @@ export type Lottery = {
       ]
     },
     {
-      "name": "getUserTicket",
-      "accounts": [
-        {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "user",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "lottery",
-          "isMut": true,
-          "isSigner": false
-        }
-      ],
-      "args": [],
-      "returns": "bool"
-    },
-    {
       "name": "joinLottery",
       "accounts": [
         {
@@ -1030,28 +1008,6 @@ export const IDL: Lottery = {
           "type": "u8"
         }
       ]
-    },
-    {
-      "name": "getUserTicket",
-      "accounts": [
-        {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "user",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "lottery",
-          "isMut": true,
-          "isSigner": false
-        }
-      ],
-      "args": [],
-      "returns": "bool"
     },
     {
       "name": "joinLottery",

@@ -324,28 +324,6 @@
       ]
     },
     {
-      "name": "getUserTicket",
-      "accounts": [
-        {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "user",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "lottery",
-          "isMut": true,
-          "isSigner": false
-        }
-      ],
-      "args": [],
-      "returns": "bool"
-    },
-    {
       "name": "joinLottery",
       "accounts": [
         {
@@ -705,6 +683,6 @@
     }
   ],
   "metadata": {
-    "address": "6mcti5AtPeQ368eSpEuaoqqkPpiMAYbzbmKTDwGD47Uc"
+    "address": "7nkYVxSBdjsGcfXPuM44BUHDbiNZhAr9kz5rEqkmPLkG"
   }
 }
